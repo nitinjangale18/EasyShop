@@ -18,3 +18,11 @@ export const loginUser = async (loginData) => {
 
   return response.data;
 };
+
+export const verifyEmail = async (token) => {
+  const response = await api.get(
+    `/api/auth/verify-email?token=${encodeURIComponent(token)}`
+  );
+
+  return response.data;
+};

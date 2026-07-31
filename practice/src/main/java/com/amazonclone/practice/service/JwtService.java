@@ -25,7 +25,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email,String role) {
 
         Date currentDate = new Date();
 
@@ -35,6 +35,8 @@ public class JwtService {
 
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
+
                 .setIssuedAt(currentDate)
                 .setExpiration(expiryDate)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -59,6 +61,14 @@ public class JwtService {
     
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+    
+    
+    public String extractRole(String token) {
+        return extractClaim(
+                token,
+                claims -> claims.get("role", String.class)
+        );
     }
 
     public <T> T extractClaim(

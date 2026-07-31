@@ -1,18 +1,20 @@
 package com.amazonclone.practice.dto;
 
+import com.amazonclone.practice.entity.Role;
+
 public class UserProfileResponse {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private String role;
+    private Role role;
 
     public UserProfileResponse() {
     }
 
     public UserProfileResponse(Long id, String firstName, String lastName,
-                               String email, String role) {
+                               String email, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,11 +54,11 @@ public class UserProfileResponse {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

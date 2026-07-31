@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.amazonclone.practice.dto.LoginRequest;
 import com.amazonclone.practice.dto.LoginResponse;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -40,6 +41,17 @@ public class AuthController {
 
     	
         LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
+    }
+    
+    
+    @GetMapping("/verify-email")
+    public ResponseEntity<ApiResponse> verifyEmail(
+            @RequestParam String token
+    ) {
+    	System.out.println("Hello verify api called");
+
+        ApiResponse response = authService.verifyEmail(token);
         return ResponseEntity.ok(response);
     }
     

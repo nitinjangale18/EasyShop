@@ -13,5 +13,7 @@ public interface AuthService {
     LoginResponse login(LoginRequest request);
     
     UserProfileResponse getCurrentUserProfile(String email);
+    
+    ApiResponse verifyEmail(String token);
 
 }

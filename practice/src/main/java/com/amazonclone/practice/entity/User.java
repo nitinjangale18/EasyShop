@@ -1,6 +1,9 @@
 package com.amazonclone.practice.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 
 @Entity
 @Table(name = "users")
@@ -26,8 +29,9 @@ public class User {
     private boolean enabled = false;
     
     
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role = "USER";
+    private Role role;
 
     public User() {
     }
@@ -43,11 +47,11 @@ public class User {
 
     // Getters and Setters
     
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
     

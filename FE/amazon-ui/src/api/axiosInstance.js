@@ -12,7 +12,11 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    const isAuthRequest =
+      config.url === "/api/auth/register" ||
+      config.url === "/api/auth/login";
+
+    if (token && !isAuthRequest) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
