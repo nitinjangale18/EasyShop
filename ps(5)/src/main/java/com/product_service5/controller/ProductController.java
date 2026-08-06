@@ -38,4 +38,24 @@ public class ProductController {
                 productService.getAllProducts()
         );
     }
+    
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProductById(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(
+                productService.getProductById(id)
+        );
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequest request
+    ) {
+        return ResponseEntity.ok(
+                productService.updateProduct(id, request)
+        );
+    }
 }
