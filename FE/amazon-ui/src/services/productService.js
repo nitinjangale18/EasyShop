@@ -1,6 +1,6 @@
 import api from "../api/axiosInstance";
 
-const PRODUCT_BASE_URL = "http://localhost:8082/api/products";
+const PRODUCT_BASE_URL = "http://localhost:8080/api/products";
 
 export const getAllProducts = async () => {
   const response = await api.get(PRODUCT_BASE_URL);

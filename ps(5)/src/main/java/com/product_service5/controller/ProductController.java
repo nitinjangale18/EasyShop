@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import com.product_service5.dto.UserInfoResponse;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -36,6 +39,17 @@ public class ProductController {
 
         return ResponseEntity.ok(
                 productService.getAllProducts()
+        );
+    }
+    
+    @GetMapping("/whoami")
+    public ResponseEntity<UserInfoResponse> whoAmI(
+            @RequestHeader("X-User-Email") String email,
+            @RequestHeader("X-User-Role") String role
+    ) {
+
+        return ResponseEntity.ok(
+                new UserInfoResponse(email, role)
         );
     }
     
