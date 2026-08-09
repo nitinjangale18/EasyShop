@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public UserProfileResponse getCurrentUser(Authentication authentication) {
+    public UserProfileResponse getCurrentUser(Authentication authentication){
 
         String email = authentication.getName();
 
