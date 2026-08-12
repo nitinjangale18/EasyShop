@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "../services/productService";
 import "./HomePage.css";
 import { Link } from "react-router-dom";
-
+import { addToCart } from "../services/cartService";
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -24,6 +24,25 @@ function HomePage() {
 
     fetchProducts();
   }, []);
+
+  const handleAddToCart = async (productId) => {
+  try {
+    await addToCart(productId, 1);
+    alert("Product added to cart");
+  } catch (error) {
+    console.error(error);
+
+    if (error.response?.status === 401) {
+      alert("Please login first");
+      return;
+    }
+
+    alert(
+      error.response?.data?.message ||
+      "Unable to add product to cart"
+    );
+  }
+};
 
   if (loading) {
     return <div className="status-message">Loading products...</div>;
@@ -90,12 +109,13 @@ function HomePage() {
             </div>
           </Link>
 
-          <button
-            className="cart-button"
-            disabled={product.stock <= 0}
-          >
-            Add to Cart
-          </button>
+         <button
+  className="cart-button"
+  disabled={product.stock <= 0}
+  onClick={() => handleAddToCart(product.id)}
+>
+  Add to Cart
+</button>
 
         </div>
       ))}
