@@ -7,6 +7,7 @@ import Profile from "../pages/Profile";
 import VerifyEmail from "../pages/VerifyEmail";
 import Navbar from "../components/Navbar";
 import ProductDetails from "../pages/ProductDetails";
+import CartPage from "../pages/CartPage";
 
 function AppRoutes() {
   const token = localStorage.getItem("token");
@@ -21,7 +22,8 @@ function AppRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
-<Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </BrowserRouter>
