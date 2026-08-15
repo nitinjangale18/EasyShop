@@ -2,6 +2,9 @@ package com.amazone_clone.cart_service.dto;
 
 import java.util.List;
 
+
+
+//this is dto for prodcut returnig from product microservice to cart microservice
 public class CartResponse {
 
     private Long cartId;
