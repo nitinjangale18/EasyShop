@@ -1,16 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
     navigate("/login", { replace: true });
   };
-
-  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <nav className="navbar">
@@ -24,25 +24,32 @@ function Navbar() {
           type="text"
           placeholder="Search Amazon"
         />
+
         <button>🔍</button>
       </div>
 
       <div className="navbar-links">
+
         <span>
-          Hello, {user?.name || "Guest"}
+          Hello,{" "}
+          {user
+            ? `${user.firstName} ${user.lastName}`
+            : "Guest"}
         </span>
 
         <Link to="/">Home</Link>
 
-        <Link to="/products">Products</Link>
 
         <Link to="/profile">Profile</Link>
 
+        <Link to="/orders">My Orders</Link>
+
         <Link to="/cart">Cart 🛒</Link>
 
-        <button onClick={logout}>
+        <button onClick={handleLogout}>
           Logout
         </button>
+
       </div>
 
     </nav>

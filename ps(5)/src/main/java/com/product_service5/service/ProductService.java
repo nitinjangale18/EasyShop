@@ -118,5 +118,29 @@ public class ProductService {
     }
     
     
+    public void decreaseStock(Long productId, Integer quantity) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new RuntimeException("Product not found: " + productId));
+
+        if (product.getStock() < quantity) {
+            throw new RuntimeException(
+                    "Insufficient stock for product: " + productId);
+        }
+
+        product.setStock(product.getStock() - quantity);
+
+        productRepository.save(product);
+
+        System.out.println(
+                "Stock updated. Product ID: "
+                        + productId
+                        + ", Remaining stock: "
+                        + product.getStock()
+        );
+    }
+    
+    
     
 }

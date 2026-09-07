@@ -47,11 +47,6 @@ public class CartService {
             String userEmail,
             AddToCartRequest request
     ) {
-    	
-    	
-    	
-    	
-    	
     	ProductResponse product;
 
     	try {
@@ -60,7 +55,7 @@ public class CartService {
     	            request.getProductId()
     	    );
 
-    	} catch (FeignException.NotFound exception) {
+    	} catch (FeignException.NotFound exception) {  
 
     		throw new ProductNotFoundException("Product not found");
     	}
@@ -235,9 +230,9 @@ public class CartService {
                         new RuntimeException("Cart not found")
                 );
 
-        cart.getItems().clear();
+        cartItemRepository.deleteByCart(cart);
 
-        cartRepository.save(cart);
+        cart.getItems().clear();
     }
     
 }

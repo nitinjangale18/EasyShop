@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCurrentUserProfile } from "../services/userService";
+import "./Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -19,28 +20,108 @@ const Profile = () => {
   }, []);
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="profile-page">
+        <div className="profile-error">
+          <h2>Something went wrong</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {
-    return <p>Loading profile...</p>;
+    return (
+      <div className="profile-page">
+        <div className="profile-loading">Loading profile...</div>
+      </div>
+    );
   }
 
+  const initials =
+    `${user.firstName?.charAt(0) || ""}${user.lastName?.charAt(0) || ""}`
+      .toUpperCase();
+
   return (
-    <div>
-      <h1>User Profile</h1>
+    <div className="profile-page">
+      <div className="profile-container">
 
-      <p>
-        <strong>Name:</strong> {user.firstName} {user.lastName}
-      </p>
+        {/* Header */}
+        <div className="profile-header">
+          <div className="profile-avatar">
+            {initials}
+          </div>
 
-      <p>
-        <strong>Email:</strong> {user.email}
-      </p>
+          <div>
+            <h1>
+              {user.firstName} {user.lastName}
+            </h1>
+            <p>Manage your account information</p>
+          </div>
+        </div>
 
-      <p>
-        <strong>Role:</strong> {user.role}
-      </p>
+        {/* Profile Information */}
+        <div className="profile-card">
+          <div className="card-header">
+            <h2>Personal Information</h2>
+            <p>Your account details</p>
+          </div>
+
+          <div className="profile-info">
+
+            <div className="info-row">
+              <div className="info-label">Full Name</div>
+              <div className="info-value">
+                {user.firstName} {user.lastName}
+              </div>
+            </div>
+
+            <div className="info-row">
+              <div className="info-label">Email Address</div>
+              <div className="info-value">
+                {user.email}
+              </div>
+            </div>
+
+            <div className="info-row">
+              <div className="info-label">Account Role</div>
+              <div className="info-value">
+                <span className="role-badge">
+                  {user.role}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Account Section */}
+        <div className="profile-card">
+          <div className="card-header">
+            <h2>Account</h2>
+            <p>Manage your account settings</p>
+          </div>
+
+          <div className="account-option">
+            <div>
+              <h3>Account Information</h3>
+              <p>View and manage your personal information.</p>
+            </div>
+
+            <span className="arrow">›</span>
+          </div>
+
+          <div className="account-option">
+            <div>
+              <h3>Security</h3>
+              <p>Manage your password and account security.</p>
+            </div>
+
+            <span className="arrow">›</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 };

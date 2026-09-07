@@ -200,7 +200,11 @@ body {
   background-color: #ffffff;
 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  overflow: visible;
 }
+
+/* PURCHASE PRICE */
 
 .purchase-price {
   font-size: 24px;
@@ -220,7 +224,14 @@ body {
 
 .add-cart-btn,
 .buy-now-btn {
+  display: block !important;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
+
   width: 100%;
+  height: 44px;
 
   border: none;
   border-radius: 22px;
@@ -228,6 +239,7 @@ body {
   padding: 11px 15px;
 
   font-size: 14px;
+  font-weight: 500;
 
   cursor: pointer;
 
@@ -236,8 +248,12 @@ body {
     transform 0.1s ease;
 }
 
+/* ADD TO CART */
+
 .add-cart-btn {
   background-color: #ffd814;
+
+  color: #0f1111;
 
   margin-bottom: 10px;
 }
@@ -246,22 +262,35 @@ body {
   background-color: #f7ca00;
 }
 
+/* BUY NOW */
+
 .buy-now-btn {
   background-color: #ffa41c;
+
+  color: #0f1111;
+
+  margin-top: 0;
+
+  min-height: 44px;
 }
 
 .buy-now-btn:hover {
   background-color: #fa8900;
 }
 
+/* BUTTON CLICK */
+
 .add-cart-btn:active,
 .buy-now-btn:active {
   transform: scale(0.98);
 }
 
+/* DISABLED BUTTON */
+
 .add-cart-btn:disabled,
 .buy-now-btn:disabled {
   background-color: #dddddd;
+
   color: #777777;
 
   cursor: not-allowed;

@@ -10,7 +10,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class CartServiceApplication {
 
 	public static void main(String[] args) {
+		System.out.println("hello1");
+	
 		SpringApplication.run(CartServiceApplication.class, args);
+		
+		
+		System.out.println("hello2");
 	}
 
 }

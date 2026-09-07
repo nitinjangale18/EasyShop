@@ -13,4 +13,7 @@ public interface CartItemRepository
             Cart cart,
             Long productId
     );
+    
+    void deleteByCart(Cart cart);
+
 }

@@ -1,27 +1,63 @@
 import { useEffect, useState } from "react";
 import {
-  getCart,
+  
   updateCartItem,
   removeCartItem,
   clearCart,
 } from "../services/cartService";
-
+import { createOrder } from "../services/orderService";
 import "./CartPage.css";
+import { useNavigate } from "react-router-dom";
+import { getMyAddresses } from "../services/addressService";
+import { getCart} from "../services/cartService";
 
 function CartPage() {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+const [addresses, setAddresses] = useState([]);
 
+
+  //////////////////////////////////////////////////////////////////////
+
+  const handleCheckout = async () => {
+  try {
+    const order = await createOrder();
+
+    console.log("Order created:", order);
+
+    alert(`Order placed successfully! Order ID: ${order.id}`);
+
+    await loadCart();
+
+  } catch (error) {
+    console.error("Error creating order:", error);
+
+    alert(
+      error.response?.data?.message ||
+      error.response?.data ||
+      "Unable to place order"
+    );
+  }
+};
+
+
+  ////////////////////////////////////////////////////////////////////////////
   const loadCart = async () => {
-    try {
-      const data = await getCart();
-      setCart(data);
-    } catch (error) {
-      console.error("Error loading cart:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const data = await getCart();
+    setCart(data);
+
+    const addressData = await getMyAddresses();
+    console.log("My addresses:", addressData);
+    setAddresses(addressData);
+
+  } catch (error) {
+    console.error("Error loading cart:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     loadCart();
@@ -186,14 +222,29 @@ function CartPage() {
 
                 </div>
 
-                <button
-                  className="remove-button"
-                  onClick={() =>
-                    handleRemove(item.productId)
-                  }
-                >
-                  Remove
-                </button>
+               <div className="cart-item-actions">
+
+  <button 
+    className="remove-button" 
+    onClick={() => 
+      handleRemove(item.productId) 
+    } 
+  > 
+    Remove 
+  </button>
+
+  <button
+    className="buy-now-cart-button"
+    onClick={() =>
+      navigate(
+      `/checkout?buyNow=true&productId=${item.productId}&fromCart=true`
+      )
+    }
+  >
+    Buy Now
+  </button>
+
+</div>
 
               </div>
 
@@ -249,9 +300,12 @@ function CartPage() {
 
           </div>
 
-          <button className="checkout-button">
-            Proceed to Checkout
-          </button>
+          <button
+  className="checkout-button"
+  onClick={() => navigate("/checkout")}
+>
+  Proceed to Checkout
+</button>
 
         </div>
 

@@ -27,6 +27,8 @@ public class CartController {
             @Valid @RequestBody AddToCartRequest request
     ) {
 
+		System.out.println("helloincontroller");
+
         cartService.addToCart(userEmail, request);
 
         return ResponseEntity
@@ -37,7 +39,7 @@ public class CartController {
     @GetMapping
     public ResponseEntity<CartResponse> getCart(
             @RequestHeader("X-User-Email") String userEmail
-    ) {
+    ){
 
         return ResponseEntity.ok(
                 cartService.getCart(userEmail)
