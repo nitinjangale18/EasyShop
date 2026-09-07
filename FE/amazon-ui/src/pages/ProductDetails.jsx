@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../services/productService";
 import "./ProductDetails.css";
+import { addToCart } from "../services/cartService";
+import { useNavigate } from "react-router-dom";
 
 function ProductDetails() {
   const { id } = useParams();
-
+const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,6 +25,25 @@ function ProductDetails() {
 
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = async () => {
+  try {
+    await addToCart(product.id, 1);
+    alert("Product added to cart");
+  } catch (error) {
+    console.error(error);
+
+    if (error.response?.status === 401) {
+      alert("Please login first");
+      return;
+    }
+
+    alert(
+      error.response?.data?.message ||
+      "Unable to add product to cart"
+    );
+  }
+};
 
   if (loading) {
     return <div className="product-status">Loading product...</div>;
@@ -100,18 +121,23 @@ function ProductDetails() {
             </p>
 
             <button
-              className="add-cart-btn"
-              disabled={product.stock <= 0}
-            >
-              Add to Cart
-            </button>
-
+  className="add-cart-btn"
+  disabled={product.stock <= 0}
+  onClick={handleAddToCart}
+>
+  Add to Cart
+</button>
             <button
-              className="buy-now-btn"
-              disabled={product.stock <= 0}
-            >
-              Buy Now
-            </button>
+  className="buy-now-btn"
+  disabled={product.stock <= 0}
+ onClick={() =>
+  navigate(
+    `/checkout?buyNow=true&productId=${product.id}`
+  )
+}
+>
+  Buy Now
+</button>
           </div>
         </section>
 

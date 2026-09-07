@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.amazonclone.practice.dto.LoginRequest;
 import com.amazonclone.practice.dto.LoginResponse;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @RequestMapping("/api/auth")

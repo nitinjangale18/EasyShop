@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import "./LoginPage.css";
-
+import { useAuth } from "../context/AuthContext";
+import { getCurrentUserProfile } from "../services/userService";
 function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,47 +28,54 @@ function LoginPage() {
     setErrorMessage("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    setLoading(true);
-    setErrorMessage("");
+  setLoading(true);
+  setErrorMessage("");
 
-    try {
-      const response = await loginUser(formData);
+  try {
 
-      console.log("Login response:", response);
+  // 1. Login
+  const response = await loginUser(formData);
 
-          localStorage.setItem("token", response.token);
+  console.log("Login response:", response);
+
+  // 2. Store token immediately
+  login(response.token);
+
+  // 3. Now call protected profile API
+  const user = await getCurrentUserProfile();
+
+  console.log("Profile response:", user);
+
+  // 4. Store user in AuthContext
+  login(response.token, user);
+
+  alert(response.message || "Login successful");
+
+  navigate("/profile");
+
+} catch (error) {
 
 
-      /*
-        Change response.token according to your backend response.
-        For example, your backend may return response.jwtToken.
-      */
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-      }
+    console.error("Login error:", error);
 
-      alert(response.message || "Login successful");
+    const message =
+      error.response?.data?.message ||
+      "Invalid email or password. Please try again.";
 
-      navigate("/profile");
-    } catch (error) {
-      console.error("Login error:", error);
+    setErrorMessage(message);
 
-      const message =
-        error.response?.data?.message ||
-        "Invalid email or password. Please try again.";
-
-      setErrorMessage(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="login-page">
       <section className="login-card">
+
         <div className="login-brand">
           <div className="brand-logo">A</div>
 
@@ -82,9 +91,16 @@ function LoginPage() {
           </div>
         )}
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
+
           <div className="form-group">
-            <label htmlFor="email">Email address</label>
+
+            <label htmlFor="email">
+              Email address
+            </label>
 
             <input
               id="email"
@@ -96,25 +112,38 @@ function LoginPage() {
               autoComplete="email"
               required
             />
+
           </div>
 
           <div className="form-group">
+
             <div className="password-label-row">
-              <label htmlFor="password">Password</label>
+
+              <label htmlFor="password">
+                Password
+              </label>
 
               <button
                 type="button"
                 className="forgot-password"
-                onClick={() => navigate("/forgot-password")}
+                onClick={() =>
+                  navigate("/forgot-password")
+                }
               >
                 Forgot password?
               </button>
+
             </div>
 
             <div className="password-input-wrapper">
+
               <input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 name="password"
                 placeholder="Enter your password"
                 value={formData.password}
@@ -126,11 +155,17 @@ function LoginPage() {
               <button
                 type="button"
                 className="password-toggle"
-                onClick={() => setShowPassword((previous) => !previous)}
+                onClick={() =>
+                  setShowPassword(
+                    (previous) => !previous
+                  )
+                }
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
+
             </div>
+
           </div>
 
           <button
@@ -138,27 +173,41 @@ function LoginPage() {
             className="login-button"
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading
+              ? "Signing in..."
+              : "Sign in"}
           </button>
+
         </form>
 
         <div className="login-divider">
-          <span>New to Amazon Clone?</span>
+          <span>
+            New to Amazon Clone?
+          </span>
         </div>
 
         <button
           type="button"
           className="create-account-button"
-          onClick={() => navigate("/register")}
+          onClick={() =>
+            navigate("/register")
+          }
         >
           Create your account
         </button>
 
         <p className="login-terms">
           By continuing, you agree to our{" "}
-          <button type="button">Terms of Service</button> and{" "}
-          <button type="button">Privacy Policy</button>.
+          <button type="button">
+            Terms of Service
+          </button>{" "}
+          and{" "}
+          <button type="button">
+            Privacy Policy
+          </button>
+          .
         </p>
+
       </section>
     </main>
   );
